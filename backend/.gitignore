@@ -1,0 +1,12 @@
+# Arquivos de Ambiente
+.env
+
+# Dados do PostgreSQL
+data/
+
+# Logs
+*.log
+
+# Arquivos do Sistema Operacional
+.DS_Store
+Thumbs.db

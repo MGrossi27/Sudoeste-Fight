@@ -1,0 +1,82 @@
+services:
+  # Banco de Dados PostgreSQL
+  db:
+    image: postgres:15-alpine
+    container_name: sf-postgres
+    restart: always
+    environment:
+      POSTGRES_USER: gym_admin
+      POSTGRES_PASSWORD: admin123
+      POSTGRES_DB: gym_db
+      TZ: America/Sao_Paulo
+    ports:
+      - "5436:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./backend/dump_apresentacao.sql:/docker-entrypoint-initdb.d/01-dump.sql
+    networks:
+      - sf-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U gym_admin -d gym_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Backend API (FastAPI)
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: sf-backend
+    restart: always
+    environment:
+      DATABASE_URL: postgresql://gym_admin:admin123@db:5432/gym_db
+      POSTGRES_USER: gym_admin
+      POSTGRES_PASSWORD: admin123
+      POSTGRES_DB: gym_db
+      POSTGRES_HOST: db
+      POSTGRES_PORT: 5432
+    ports:
+      - "8001:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - sf-network
+    volumes:
+      - ./backend:/app
+      - /app/__pycache__
+
+  # Frontend (Expo Web)
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: sf-frontend
+    restart: always
+    environment:
+      EXPO_DEVTOOLS_LISTEN_ADDRESS: 0.0.0.0
+      REACT_NATIVE_PACKAGER_HOSTNAME: localhost
+      NODE_ENV: development
+    ports:
+      - "8081:8081"
+      - "19000:19000"
+      - "19001:19001"
+      - "19002:19002"
+    depends_on:
+      backend:
+        condition: service_started
+    networks:
+      - sf-network
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+      - /app/.expo
+
+volumes:
+  postgres_data:
+    driver: local
+
+networks:
+  sf-network:
+    driver: bridge
