@@ -33,7 +33,7 @@ Pronto! O sistema está rodando com dados de demonstração já carregados.
 
 ### Acessar o Sistema
 
-- **Frontend (Aplicação Web)**: http://localhost:19006
+- **Frontend (Aplicação Web)**: http://localhost:8081
 - **API Backend**: http://localhost:8001
 - **Documentação Interativa (Swagger)**: http://localhost:8001/docs
 - **Banco de Dados PostgreSQL**: localhost:5436
