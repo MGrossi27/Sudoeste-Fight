@@ -146,7 +146,7 @@ docker-compose up -d --build
 ### Dashboard Administrativo
 Visão geral das métricas e financeiro em tempo real.
 ![Dashboard](assets/dashboard-full.png)
-
+![Dashboard](assets/dashboard-full2.png)
 ### Gestão de Alunos
 Controle total de matrículas e status de pagamento.
 ![Alunos](assets/alunos-full.png)
