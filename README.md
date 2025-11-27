@@ -18,7 +18,7 @@ Você só precisa ter o **Docker** instalado na sua máquina:
 
 1. **Clone o repositório**
 ```bash
-git clone https://github.com/Pedrohbar/Sudoeste-Fight.git
+git clone https://github.com/seu-usuario/Sudoeste-Fight.git
 cd Sudoeste-Fight
 ```
 
